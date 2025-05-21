@@ -39,3 +39,11 @@ def add_student_data(records):
     name = input("Enter student name: ").strip()  # Prompt for name
 
     score = get_valid_score()  # Call validation function to get score
+
+    # Add the score to the student's record
+    if name in records:
+        records[name].append(score)  # Append score to existing student
+    else:
+        records[name] = [score] # Create new entry if student is new
+
+        
