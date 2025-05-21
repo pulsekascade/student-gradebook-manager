@@ -13,3 +13,9 @@ Upgrades from Version 1:
 MIN_SCORE = 0
 MAX_SCORE = 100
 
+# Function to display the main menu
+def show_menu():
+    print("\n--- Gradebook Manager ---")  # Title
+    print("1. Add student data")         # Option 1
+    print("2. Display all student records")  # Option 2
+    print("3. Exit")                     # Option 3
