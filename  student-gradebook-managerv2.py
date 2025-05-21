@@ -60,3 +60,25 @@ def display_all_records(records):
         for name, scores in records.items():
             print(f"{name:<12} | {scores}")  # Print each student's name and scores
 
+# Main program function to control flow
+def main():
+    student_records = {}  # Dictionary to store data
+
+
+    while True:  # Loop until user chooses to exit
+        show_menu()  # Show main menu
+        choice = input("Enter your choice (1–3): ").strip()  # Get menu choice
+
+        if choice == "1":
+            add_student_data(student_records)  # Add student
+        elif choice == "2":
+            display_all_records(student_records)  # Display records
+        elif choice == "3":
+            print("Exiting program. Goodbye!")  # Exit message
+            break  # End loop and exit
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")  # Invalid menu input
+
+# Entry point for the program
+if __name__ == "__main__":
+    main()
