@@ -49,3 +49,14 @@ def add_student_data(records):
     # Display how many scores the student has now
     print(f"Added score for {name}. Total scores recorded: {len(records[name])}")
 
+# Function to display all student records in a table
+def display_all_records(records):
+    if not records:
+        print("No records to display.")  # If dictionary is empty
+    else:
+        print("\nAll Student Records:")  # Header
+        print(f"{'Student':<12} | Scores")  # Column titles
+        print("-" * 30)  # Divider
+        for name, scores in records.items():
+            print(f"{name:<12} | {scores}")  # Print each student's name and scores
+
