@@ -19,3 +19,17 @@ def show_menu():
     print("1. Add student data")         # Option 1
     print("2. Display all student records")  # Option 2
     print("3. Exit")                     # Option 3
+
+# Reusable function to validate and return a score
+def get_valid_score():
+    while True:
+        # Prompt user to enter a score
+        score_input = input(f"Enter test score ({MIN_SCORE}–{MAX_SCORE}): ").strip()
+        try:
+            score = int(score_input)  # Convert to integer
+            if MIN_SCORE <= score <= MAX_SCORE:  # Check if score is in range
+                return score  # Valid score returned
+            else:
+                print(f"Score must be between {MIN_SCORE} and {MAX_SCORE}.")  # Out of range
+        except ValueError:
+            print("Invalid input. Please enter a whole number.")  # Not a number
