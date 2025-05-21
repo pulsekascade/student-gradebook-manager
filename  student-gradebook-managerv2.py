@@ -33,3 +33,9 @@ def get_valid_score():
                 print(f"Score must be between {MIN_SCORE} and {MAX_SCORE}.")  # Out of range
         except ValueError:
             print("Invalid input. Please enter a whole number.")  # Not a number
+
+# Function to add a student and their score
+def add_student_data(records):
+    name = input("Enter student name: ").strip()  # Prompt for name
+
+    score = get_valid_score()  # Call validation function to get score
