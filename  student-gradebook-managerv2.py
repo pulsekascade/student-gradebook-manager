@@ -46,4 +46,6 @@ def add_student_data(records):
     else:
         records[name] = [score] # Create new entry if student is new
 
-        
+    # Display how many scores the student has now
+    print(f"Added score for {name}. Total scores recorded: {len(records[name])}")
+
