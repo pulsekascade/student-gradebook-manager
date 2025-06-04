@@ -44,3 +44,12 @@ def add_student_data(records):
     except ValueError:
         # This runs if the score_input is not a number (e.g. "abc")
         print("Invalid input. Please enter a whole number.")
+# This function prints out all student names and their scores from the dictionary.
+def display_all_records(records):
+    if not records:
+        # If the dictionary is empty, tell the user there are no records
+        print("No records to display.")
+    else:
+        print("\nAll Student Records:")  # Header
+        for name, scores in records.items():  # Loop through each student and their scores
+            print(f"{name}: Scores = {scores}")  # Print each name and list of scores
