@@ -53,3 +53,27 @@ def display_all_records(records):
         print("\nAll Student Records:")  # Header
         for name, scores in records.items():  # Loop through each student and their scores
             print(f"{name}: Scores = {scores}")  # Print each name and list of scores
+# This is the main function that controls the program's flow.
+def main():
+    student_records = {}  # Create an empty dictionary to store student data
+
+    while True:  # Loop will repeat until user chooses to exit
+        show_menu()  # Display the main menu
+        choice = input("Enter your choice (1–3): ").strip()  # Ask for user's menu choice
+
+        if choice == "1":
+            add_student_data(student_records)  # Call function to add student data
+        elif choice == "2":
+            display_all_records(student_records)  # Call function to show all records
+        elif choice == "3":
+            print("Exiting program. Goodbye!")  # Say goodbye
+            break  # Exit the loop, ending the program
+        else:
+            # This runs if the user types a menu option that isn't 1, 2, or 3
+            print("Invalid choice. Please enter 1, 2, or 3.")
+
+
+# This line checks if the program is being run directly (not imported)
+# and then calls the main() function to start the program.
+if __name__ == "__main__":
+    main()
