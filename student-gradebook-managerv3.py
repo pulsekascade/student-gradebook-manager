@@ -11,7 +11,6 @@ def show_menu():  # Define function to display the main menu
     print("3. Search for a student")     # Print menu option 3
     print("4. Exit")                     # Print menu option 4
 
-
 def get_valid_name():  # Define function to get a non-empty student name
     while True:  # Start an infinite loop to repeatedly ask for input until valid
         name = input("Enter student name: ").strip()  # Ask for input and remove leading/trailing whitespace
@@ -19,7 +18,6 @@ def get_valid_name():  # Define function to get a non-empty student name
             print("Student name cannot be blank.")  # Notify user that blank names are not allowed
         else:  # If name is not blank
             return name  # Return the valid name and exit the function
-
 
 def get_valid_score():  # Define function to get a valid integer score within range
     while True:  # Start infinite loop for repeated input attempts
@@ -33,7 +31,6 @@ def get_valid_score():  # Define function to get a valid integer score within ra
         except ValueError:  # If conversion to int fails (non-integer input)
             print("Invalid input. Please enter a whole number.")  # Inform user of invalid input type
 
-
 def add_student_data(records):  # Define function to add student data to records dictionary
     name = get_valid_name()  # Call function to get a valid student name
     score = get_valid_score()  # Call function to get a valid score
@@ -42,3 +39,10 @@ def add_student_data(records):  # Define function to add student data to records
     else:  # If student name does not exist in records
         records[name] = [score]  # Create a new entry with the student's name and a list containing the score
     print(f"Added score for {name}. Total scores recorded: {len(records[name])}")  # Confirm addition and show total scores for student
+
+def search_student(records):  # Define function to search for a student in records
+    name = input("Enter student name to search: ").strip()  # Prompt user to enter student name and strip whitespace
+    if name in records:  # Check if the entered name exists in the records dictionary
+        print(f"{name} has scores: {records[name]}")  # Display the student's scores
+    else:  # If student not found
+        print(f"No records found for {name}.")  # Inform the user that no record was found
