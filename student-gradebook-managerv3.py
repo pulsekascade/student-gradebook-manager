@@ -46,3 +46,11 @@ def search_student(records):  # Define function to search for a student in recor
         print(f"{name} has scores: {records[name]}")  # Display the student's scores
     else:  # If student not found
         print(f"No records found for {name}.")  # Inform the user that no record was found
+
+def display_all_records(records):  # Define function to display all student records
+    if not records:  # Check if the records dictionary is empty
+        print("No student records to display.")  # Inform the user that there are no records
+        return  # Exit the function early
+    print("\n--- All Student Records ---")  # Print header for records display
+    for name, scores in records.items():  # Iterate over all students and their scores
+        print(f"{name}: {scores}")  # Print the student name and list of scores
