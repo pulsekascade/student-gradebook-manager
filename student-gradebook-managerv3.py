@@ -80,3 +80,24 @@ def load_data():  # Define function to load student records from file
     except IOError:
         print("Error loading data from file.")  # Notify user if loading fails
     return records  # Return loaded records
+
+def main():  # Define main program function
+    records = load_data()  # Load existing records from file
+    while True:  # Start main program loop
+        show_menu()  # Display menu
+        choice = input("Choose an option: ").strip()  # Get user choice
+        if choice == "1":  # Add student data
+            add_student_data(records)
+        elif choice == "2":  # Display all records
+            display_all_records(records)
+        elif choice == "3":  # Search for student
+            search_student(records)
+        elif choice == "4":  # Exit program
+            save_data(records)  # Save data before exiting
+            print("Exiting program. Goodbye!")
+            break  # Exit loop and end program
+        else:
+            print("Invalid option. Please enter 1, 2, 3, or 4.")  # Handle invalid input
+
+if __name__ == "__main__":  # If this script is run directly
+    main()  # Call main function to start program
