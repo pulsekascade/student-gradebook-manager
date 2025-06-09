@@ -54,3 +54,29 @@ def display_all_records(records):  # Define function to display all student reco
     print("\n--- All Student Records ---")  # Print header for records display
     for name, scores in records.items():  # Iterate over all students and their scores
         print(f"{name}: {scores}")  # Print the student name and list of scores
+
+def save_data(records):  # Define function to save student records to file
+    try:
+        with open(DATA_FILE, "w") as file:  # Open file in write mode
+            for name, scores in records.items():  # Iterate over all records
+                scores_str = ",".join(map(str, scores))  # Convert scores list to comma-separated string
+                file.write(f"{name}:{scores_str}\n")  # Write name and scores to file
+        print("Data saved successfully.")  # Notify user of success
+    except IOError:  # Catch file I/O errors
+        print("Error saving data to file.")  # Notify user of failure
+
+def load_data():  # Define function to load student records from file
+    records = {}  # Create empty dictionary to hold data
+    if not os.path.exists(DATA_FILE):  # Check if data file exists
+        return records  # Return empty records if no file found
+    try:
+        with open(DATA_FILE, "r") as file:  # Open file in read mode
+            for line in file:  # Read each line
+                line = line.strip()
+                if line:  # If line is not empty
+                    name, scores_str = line.split(":")  # Split into name and scores string
+                    scores = list(map(int, scores_str.split(",")))  # Convert scores back to list of ints
+                    records[name] = scores  # Add to records dictionary
+    except IOError:
+        print("Error loading data from file.")  # Notify user if loading fails
+    return records  # Return loaded records
