@@ -41,3 +41,35 @@ def add_student():
         print("Student data saved.")
     else:
         print("No subjects entered; student not saved.")
+
+
+def load_data():
+    if not os.path.exists(DATA_FILE):
+        return []
+    scores = []
+    with open(DATA_FILE, "r") as file:
+        for line in file:
+            line = line.strip()
+            if line:
+                try:
+                    name, subj_scores = line.split(":")
+                    for entry in subj_scores.split(","):
+                        subject, score = entry.split("-")
+                        scores.append(int(score))
+                except ValueError:
+                    continue  # Skip malformed lines
+    return scores
+
+
+def categorize_scores(scores):
+    categories = {"Not Achieved": 0, "Achieved": 0, "Merit": 0, "Excellence": 0}
+    for score in scores:
+        if 0 <= score <= 49:
+            categories["Not Achieved"] += 1
+        elif 50 <= score <= 64:
+            categories["Achieved"] += 1
+        elif 65 <= score <= 84:
+            categories["Merit"] += 1
+        elif 85 <= score <= 100:
+            categories["Excellence"] += 1
+    return categories
