@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 DATA_FILE = "data.txt"
 
@@ -92,13 +93,36 @@ def show_pie_chart(categories):
     plt.show()
 
 
+def show_charts_tkinter(categories):
+    root = tk.Tk()
+    root.title("Score Distribution Charts")
+
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    # Bar Chart
+    axs[0].bar(categories.keys(), categories.values(), color=["red", "orange", "blue", "green"])
+    axs[0].set_title("Bar Chart")
+    axs[0].set_ylabel("Number of Scores")
+
+    # Pie Chart
+    axs[1].pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%", colors=["red", "orange", "blue", "green"])
+    axs[1].set_title("Pie Chart")
+
+    canvas = FigureCanvasTkAgg(fig, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+
+    root.mainloop()
+
+
 def main():
     print("Welcome to Student Gradebook Manager v4")
     while True:
         print("\nMenu:")
         print("1. Add student data")
-        print("2. Show score distribution charts")
-        print("3. Exit")
+        print("2. Show score distribution charts (single)")
+        print("3. Show bar and pie charts in same window")
+        print("4. Exit")
         choice = input("Enter choice: ").strip()
 
         if choice == "1":
@@ -112,6 +136,13 @@ def main():
             else:
                 print("No scores available to display.")
         elif choice == "3":
+            scores = load_data()
+            if scores:
+                categories = categorize_scores(scores)
+                show_charts_tkinter(categories)
+            else:
+                print("No scores available to display.")
+        elif choice == "4":
             print("Goodbye!")
             break
         else:
