@@ -90,3 +90,33 @@ def show_pie_chart(categories):
     plt.title("Score Distribution (Pie Chart)")
     plt.tight_layout()
     plt.show()
+
+
+def main():
+    print("Welcome to Student Gradebook Manager v4")
+    while True:
+        print("\nMenu:")
+        print("1. Add student data")
+        print("2. Show score distribution charts")
+        print("3. Exit")
+        choice = input("Enter choice: ").strip()
+
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            scores = load_data()
+            if scores:
+                categories = categorize_scores(scores)
+                show_bar_chart(categories)
+                show_pie_chart(categories)
+            else:
+                print("No scores available to display.")
+        elif choice == "3":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
