@@ -30,3 +30,14 @@ def get_subject_scores():
         except ValueError:
             print("Invalid score, please enter a number.")
     return subject_scores
+
+
+def add_student():
+    name = get_valid_name()
+    subjects = get_subject_scores()
+    if subjects:
+        with open(DATA_FILE, "a") as file:
+            file.write(f"{name}:{','.join(subjects)}\n")
+        print("Student data saved.")
+    else:
+        print("No subjects entered; student not saved.")
