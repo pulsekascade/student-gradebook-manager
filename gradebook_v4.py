@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 
 DATA_FILE = "data.txt"
 
-
 def get_valid_name():
     while True:
         name = input("Enter student name: ").strip()
@@ -13,7 +12,6 @@ def get_valid_name():
             print("Name cannot be blank.")
         else:
             return name
-
 
 def get_subject_scores():
     subject_scores = []
@@ -31,7 +29,6 @@ def get_subject_scores():
             print("Invalid score, please enter a number.")
     return subject_scores
 
-
 def add_student():
     name = get_valid_name()
     subjects = get_subject_scores()
@@ -41,7 +38,6 @@ def add_student():
         print("Student data saved.")
     else:
         print("No subjects entered; student not saved.")
-
 
 def load_data():
     if not os.path.exists(DATA_FILE):
@@ -60,7 +56,6 @@ def load_data():
                     continue  # Skip malformed lines
     return scores
 
-
 def categorize_scores(scores):
     categories = {"Not Achieved": 0, "Achieved": 0, "Merit": 0, "Excellence": 0}
     for score in scores:
@@ -74,7 +69,6 @@ def categorize_scores(scores):
             categories["Excellence"] += 1
     return categories
 
-
 def show_bar_chart(categories):
     plt.figure(figsize=(6, 4))
     plt.bar(categories.keys(), categories.values(), color="skyblue")
@@ -83,14 +77,12 @@ def show_bar_chart(categories):
     plt.tight_layout()
     plt.show()
 
-
 def show_pie_chart(categories):
     plt.figure(figsize=(6, 4))
     plt.pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%")
     plt.title("Score Distribution (Pie Chart)")
     plt.tight_layout()
     plt.show()
-
 
 def print_student_data():
     if not os.path.exists(DATA_FILE):
@@ -109,6 +101,34 @@ def print_student_data():
                 except ValueError:
                     continue
 
+def search_student():
+    if not os.path.exists(DATA_FILE):
+        print("No student data found.")
+        return
+
+    search_name = input("Enter the name to search for: ").strip().lower()
+    found = False
+
+    with open(DATA_FILE, "r") as file:
+        for line in file:
+            line = line.strip()
+            if line:
+                try:
+                    name, subj_scores = line.split(":")
+                    if name.lower() == search_name:
+                        print(f"{name}: {subj_scores.replace(',', ', ')}")
+                        found = True
+                except ValueError:
+                    continue
+    if not found:
+        print("Student not found.")
+
+def show_all_raw_scores():
+    scores = load_data()
+    if scores:
+        print("All scores:", scores)
+    else:
+        print("No scores found.")
 
 def main():
     print("Welcome to Student Gradebook Manager v4")
@@ -117,6 +137,10 @@ def main():
         print("1. Add student data")
         print("2. Show score distribution charts (single)")
         print("3. Exit")
+        print("4. Show student records only")
+        print("5. Search for a student")
+        print("6. Show all raw scores")
+
         choice = input("Enter choice: ").strip()
 
         if choice == "1":
@@ -133,9 +157,14 @@ def main():
         elif choice == "3":
             print("Goodbye!")
             break
+        elif choice == "4":
+            print_student_data()
+        elif choice == "5":
+            search_student()
+        elif choice == "6":
+            show_all_raw_scores()
         else:
             print("Invalid choice. Please try again.")
-
 
 if __name__ == "__main__":
     main()
