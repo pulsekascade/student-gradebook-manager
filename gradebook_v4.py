@@ -73,3 +73,20 @@ def categorize_scores(scores):
         elif 85 <= score <= 100:
             categories["Excellence"] += 1
     return categories
+
+
+def show_bar_chart(categories):
+    plt.figure(figsize=(6, 4))
+    plt.bar(categories.keys(), categories.values(), color="skyblue")
+    plt.title("Score Distribution (Bar Chart)")
+    plt.ylabel("Number of Scores")
+    plt.tight_layout()
+    plt.show()
+
+
+def show_pie_chart(categories):
+    plt.figure(figsize=(6, 4))
+    plt.pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%")
+    plt.title("Score Distribution (Pie Chart)")
+    plt.tight_layout()
+    plt.show()
