@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 DATA_FILE = "data.txt"
 
@@ -40,6 +41,7 @@ def add_student():
         print("No subjects entered; student not saved.")
 
 def load_data():
+    # Load all scores from the data file into a list
     if not os.path.exists(DATA_FILE):
         return []
     scores = []
@@ -57,6 +59,7 @@ def load_data():
     return scores
 
 def categorize_scores(scores):
+    # Categorize scores into NCEA levels
     categories = {"Not Achieved": 0, "Achieved": 0, "Merit": 0, "Excellence": 0}
     for score in scores:
         if 0 <= score <= 49:
@@ -69,28 +72,12 @@ def categorize_scores(scores):
             categories["Excellence"] += 1
     return categories
 
-def show_bar_chart(categories):
-    plt.figure(figsize=(6, 4))
-    plt.bar(categories.keys(), categories.values(), color="skyblue")
-    plt.title("Score Distribution (Bar Chart)")
-    plt.ylabel("Number of Scores")
-    plt.tight_layout()
-    plt.show()
-
-def show_pie_chart(categories):
-    plt.figure(figsize=(6, 4))
-    plt.pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%")
-    plt.title("Score Distribution (Pie Chart)")
-    plt.tight_layout()
-    plt.show()
-
 def print_student_data():
     if not os.path.exists(DATA_FILE):
         print("No student data found.")
         return
-
+    print("\n--- Student Records ---")
     with open(DATA_FILE, "r") as file:
-        print("\n--- Student Records ---")
         for line in file:
             line = line.strip()
             if line:
@@ -105,10 +92,8 @@ def search_student():
     if not os.path.exists(DATA_FILE):
         print("No student data found.")
         return
-
     search_name = input("Enter the name to search for: ").strip().lower()
     found = False
-
     with open(DATA_FILE, "r") as file:
         for line in file:
             line = line.strip()
@@ -124,45 +109,89 @@ def search_student():
         print("Student not found.")
 
 def show_all_raw_scores():
+    # Print all scores from file as a list
     scores = load_data()
     if scores:
         print("All scores:", scores)
     else:
         print("No scores found.")
 
+def show_graphs_side_by_side(categories):
+    # Create a Tkinter window to display bar and pie charts side by side
+    root = tk.Tk()
+    root.title("Score Distribution Charts")
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+    # Bar chart
+    ax1.bar(categories.keys(), categories.values(), color="skyblue")
+    ax1.set_title("Score Distribution (Bar Chart)")
+    ax1.set_ylabel("Number of Scores")
+
+    # Pie chart
+    ax2.pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%")
+    ax2.set_title("Score Distribution (Pie Chart)")
+
+    plt.tight_layout()
+
+    # Embed matplotlib figure in Tkinter window
+    canvas = FigureCanvasTkAgg(fig, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+
+    root.mainloop()
+
 def main():
     print("Welcome to Student Gradebook Manager v4")
     while True:
         print("\nMenu:")
         print("1. Add student data")
-        print("2. Show score distribution charts (single)")
-        print("3. Exit")
-        print("4. Show student records only")
-        print("5. Search for a student")
+        print("2. Show student records (print)")
+        print("3. Search for a student")
+        print("4. Show score distribution charts (popups)")
+        print("5. Show score distribution charts (side by side window)")  # New option
         print("6. Show all raw scores")
+        print("7. Exit")
 
         choice = input("Enter choice: ").strip()
 
         if choice == "1":
             add_student()
         elif choice == "2":
+            print_student_data()
+        elif choice == "3":
+            search_student()
+        elif choice == "4":
             scores = load_data()
             if scores:
-                print_student_data()
                 categories = categorize_scores(scores)
-                show_bar_chart(categories)
-                show_pie_chart(categories)
+                # Show charts separately as popups
+                plt.figure(figsize=(6, 4))
+                plt.bar(categories.keys(), categories.values(), color="skyblue")
+                plt.title("Score Distribution (Bar Chart)")
+                plt.ylabel("Number of Scores")
+                plt.tight_layout()
+                plt.show()
+
+                plt.figure(figsize=(6, 4))
+                plt.pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%")
+                plt.title("Score Distribution (Pie Chart)")
+                plt.tight_layout()
+                plt.show()
             else:
                 print("No scores available to display.")
-        elif choice == "3":
-            print("Goodbye!")
-            break
-        elif choice == "4":
-            print_student_data()
         elif choice == "5":
-            search_student()
+            scores = load_data()
+            if scores:
+                categories = categorize_scores(scores)
+                show_graphs_side_by_side(categories)
+            else:
+                print("No scores available to display.")
         elif choice == "6":
             show_all_raw_scores()
+        elif choice == "7":
+            print("Goodbye!")
+            break
         else:
             print("Invalid choice. Please try again.")
 
