@@ -7,6 +7,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 DATA_FILE = "data.txt"
 
 def get_valid_name():
+    # Prompt for a non-blank student name
     while True:
         name = input("Enter student name: ").strip()
         if name == "":
@@ -15,6 +16,7 @@ def get_valid_name():
             return name
 
 def get_subject_scores():
+    # Collect subject-score pairs until blank subject entered
     subject_scores = []
     while True:
         subject = input("Enter subject name (or press Enter to finish): ").strip()
@@ -31,6 +33,7 @@ def get_subject_scores():
     return subject_scores
 
 def add_student():
+    # Add a new student and their subject scores to the data file
     name = get_valid_name()
     subjects = get_subject_scores()
     if subjects:
@@ -41,7 +44,7 @@ def add_student():
         print("No subjects entered; student not saved.")
 
 def load_data():
-    # Load all scores from the data file into a list
+    # Read all scores from the file into a list
     if not os.path.exists(DATA_FILE):
         return []
     scores = []
@@ -55,11 +58,11 @@ def load_data():
                         subject, score = entry.split("-")
                         scores.append(int(score))
                 except ValueError:
-                    continue  # Skip malformed lines
+                    continue  # Ignore malformed lines
     return scores
 
 def categorize_scores(scores):
-    # Categorize scores into NCEA levels
+    # Categorize scores by NCEA standards
     categories = {"Not Achieved": 0, "Achieved": 0, "Merit": 0, "Excellence": 0}
     for score in scores:
         if 0 <= score <= 49:
@@ -73,6 +76,7 @@ def categorize_scores(scores):
     return categories
 
 def print_student_data():
+    # Print all student records from the file
     if not os.path.exists(DATA_FILE):
         print("No student data found.")
         return
@@ -89,6 +93,7 @@ def print_student_data():
                     continue
 
 def search_student():
+    # Search for a student by name and display their subjects and scores
     if not os.path.exists(DATA_FILE):
         print("No student data found.")
         return
@@ -109,7 +114,7 @@ def search_student():
         print("Student not found.")
 
 def show_all_raw_scores():
-    # Print all scores from file as a list
+    # Print all scores loaded from the file
     scores = load_data()
     if scores:
         print("All scores:", scores)
@@ -117,24 +122,24 @@ def show_all_raw_scores():
         print("No scores found.")
 
 def show_graphs_side_by_side(categories):
-    # Create a Tkinter window to display bar and pie charts side by side
+    # Display bar and pie charts side-by-side in a Tkinter window
     root = tk.Tk()
     root.title("Score Distribution Charts")
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
 
-    # Bar chart
+    # Bar chart on the left
     ax1.bar(categories.keys(), categories.values(), color="skyblue")
     ax1.set_title("Score Distribution (Bar Chart)")
     ax1.set_ylabel("Number of Scores")
 
-    # Pie chart
+    # Pie chart on the right
     ax2.pie(categories.values(), labels=categories.keys(), autopct="%1.1f%%")
     ax2.set_title("Score Distribution (Pie Chart)")
 
     plt.tight_layout()
 
-    # Embed matplotlib figure in Tkinter window
+    # Embed matplotlib figure into Tkinter window
     canvas = FigureCanvasTkAgg(fig, master=root)
     canvas.draw()
     canvas.get_tk_widget().pack()
@@ -149,7 +154,7 @@ def main():
         print("2. Show student records (print)")
         print("3. Search for a student")
         print("4. Show score distribution charts (popups)")
-        print("5. Show score distribution charts (side by side window)")  # New option
+        print("5. Show score distribution charts (side by side window)")
         print("6. Show all raw scores")
         print("7. Exit")
 
@@ -165,7 +170,7 @@ def main():
             scores = load_data()
             if scores:
                 categories = categorize_scores(scores)
-                # Show charts separately as popups
+                # Show charts in separate popup windows
                 plt.figure(figsize=(6, 4))
                 plt.bar(categories.keys(), categories.values(), color="skyblue")
                 plt.title("Score Distribution (Bar Chart)")
