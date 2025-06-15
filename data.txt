@@ -2,3 +2,4 @@ Alice:85,78,92
 Bob:90,90
 Charlie:88
 David:85
+John:89
